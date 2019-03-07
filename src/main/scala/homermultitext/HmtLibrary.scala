@@ -26,12 +26,12 @@ case class HmtLibrary(library: CiteLibrary) {
   lazy val dseCollections : Vector[Cite2Urn]= {
     library.collectionsForModel(HmtLibrary.DseModelUrn)
   }
+  lazy val vaDse = dseRecords(HmtLibrary.vaPages)
 
   def dseDataForMs(codex: Cite2Urn) = {
     dseRecords(codex)
   }
 
-  lazy val vaDse = dseRecords(HmtLibrary.vaPages)
 
 
 
@@ -61,6 +61,10 @@ case class HmtLibrary(library: CiteLibrary) {
 
   lazy val scholia: Vector[Scholion] = {
     Vector.empty[Scholion]
+  }
+
+  lazy val tokens: Vector[GroupedToken] = {
+    Vector.empty[GroupedToken]
   }
 
   lazy val persons: Vector[Person] = {
