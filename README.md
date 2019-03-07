@@ -13,6 +13,10 @@ val citeLib = CiteLibrarySource.fromFile("hmt-2018e.cex")
 val hmt = HmtLibrary(citeLib)
 ```
 
+From this object, we should model two kinds of access to data:
+
+1. `lazy val`s that instantiate from the `CiteLibrary` all of the instances of a particular type of HMT object.  E.g., `lazy val persons: Set[Person]` instantiates all `Person` objects represented in the library, and `lazy val iliadLines: Vector[IliadLine]` instantiates an order list of all `IliadLine` objects in the library.
+2.  functions that select material from these collections by URN.  E.g., `def person(urn: Cite2): Option[Person]` selects a single person, or none if the URN fails to match.
 
 ## Stage 2
 

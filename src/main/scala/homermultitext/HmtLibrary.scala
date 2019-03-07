@@ -66,6 +66,7 @@ case class HmtLibrary(library: CiteLibrary) {
   lazy val persons: Vector[Person] = {
     Vector.empty[Person]
   }
+  // turn this into a type parameter function
   def person(urn: Cite2Urn): Option[Person] = {
     val matches = persons.filter(_.urn == urn)
     matches.size match {
