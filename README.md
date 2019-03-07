@@ -1,4 +1,4 @@
-# `hmt-analysis`: building and analyzing a digital multitext
+# `hmt-analysis`:  building and analyzing a digital multitext
 
 This is a library modelling the content of the Homer Muiltitext project.
 

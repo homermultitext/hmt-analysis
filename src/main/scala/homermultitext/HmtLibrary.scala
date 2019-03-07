@@ -8,7 +8,9 @@ import edu.holycross.shot.citeobj._
 import edu.holycross.shot.cex._
 import edu.holycross.shot.citerelation._
 
-/**  A CITE library that understands the HomerMultitext project.*
+/**  A CITE library that understands the HomerMultitext project.
+* The HmtLibrary should know how to create every object in this code package
+* from  a single CiteLibrary.
 *
 * @param library A CiteLibrary, possibly created from a comprehensive CEX
 * release publication of the HMT project.
@@ -16,6 +18,7 @@ import edu.holycross.shot.citerelation._
 case class HmtLibrary(library: CiteLibrary) {
 
 
+  // Pull out CiteLibrary components for convenient reference:
   lazy val collectionRepo: CiteCollectionRepository = library.collectionRepository.get
   lazy val textRepo : TextRepository = library.textRepository.get
   lazy val relations:  Set[CiteTriple]  = library.relationSet.get.relations
@@ -24,6 +27,15 @@ case class HmtLibrary(library: CiteLibrary) {
     library.collectionsForModel(HmtLibrary.DseModelUrn)
   }
 
+  def dseDataForMs(codex: Cite2Urn) = {
+    dseRecords(codex)
+  }
+
+  lazy val vaDse = dseRecords(HmtLibrary.vaPages)
+
+
+
+  ///////// Lazy instantiation of all object types in the library.
   /** All codices in this library. */
   lazy val codices: Vector[Codex] = {
 
@@ -42,34 +54,89 @@ case class HmtLibrary(library: CiteLibrary) {
     Vector.empty[Codex]
   }
 
-
   lazy val persons: Vector[Person] = {
     Vector.empty[Person]
   }
 
-  /** Get all objects in a collection modelled by DSE. */
-  def dseRecords(collectionUrn: Cite2Urn) = {
-     collectionRepo.objectsForCollection(collectionUrn)
+  lazy val places: Vector[Place] = {
+    Vector.empty[Place]
   }
 
+  lazy val EthnicGroup: Vector[EthnicGroup] = {
+    Vector.empty[EthnicGroup]
+  }
+
+  lazy val speeches: Vector[Speech]  = {
+    Vector.empty[Speech]
+  }
+
+  lazy val vaShipsCatalog: Vector[VenACatalogEntry]  = {
+    Vector.empty[VenACatalogEntry]
+  }
+
+  lazy val vaSimileMarker: Vector[VenASimileMarker]  = {
+    Vector.empty[VenASimileMarker]
+  }
+
+  lazy val textReuse: Vector[TextReuse]  = {
+    Vector.empty[TextReuse]
+  }
+
+
+
+
+  ///////////  Functions to find specific sets of content
+  
+  /** Get all objects in a collection modelled by DSE.
+  *
+  * @param context Limiting URN, perhaps a whole manuscript.
+  */
+  def dseRecords(context : Cite2Urn) = {
+     collectionRepo.objectsForCollection(context)
+  }
+
+
+  def scholion(urn: CtsUrn) = { // Scholion
+  }
+
+  def iliadLine(urn: CtsUrn) = { // IliadLine
+
+    val label = s"Iliad ${urn.passageComponent} (${urn.version})"
+
+    // get vector of Scholia
+    // get vector of CriticalSign
+    //IliadLine(urn, "I")
+/*
+  iliadUrn: CtsUrn,
+  iliadLabel: String,
+  iliadDse: DsePassage,
+  scholia: Vector[Scholion] = Vector.empty[Scholion],
+  criticalSigns : Vector[CriticalSign]= Vector.empty[CriticalSign]
+*/
+  }
+
+  /// create individual object from URN
   def textPassage(urn: CtsUrn) = {//: TextPassage  = {
+    urn.textGroup match {
+      case "tlg0012" => iliadLine(urn)
+      case "tlg5026" => scholion(urn)
+      case _ => throw new Exception("Don't know about texts in group " + urn.textGroup)
+    }
+  }
+
 
 /*
-    */
-  }
-
   def dseForCodex(tbsUrn: Cite2Urn )= {
     tbsUrn match {
       case HmtLibrary.vaPages => {
         collectionRepo.objectsForCollection(tbsUrn)
-
       }
       case _ => {
         println("No records for this collection in library.")
       }
     }
   }
-
+*/
   def pagesForCodex(codexUrn: Cite2Urn): Vector[Page] = {
     Vector.empty[Page]
   }
