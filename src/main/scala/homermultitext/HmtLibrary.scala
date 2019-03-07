@@ -54,29 +54,59 @@ case class HmtLibrary(library: CiteLibrary) {
     Vector.empty[Codex]
   }
 
+
+  lazy val iliadLines: Vector[IliadLine] = {
+    Vector.empty[IliadLine]
+  }
+
+  lazy val scholia: Vector[Scholion] = {
+    Vector.empty[Scholion]
+  }
+
   lazy val persons: Vector[Person] = {
     Vector.empty[Person]
   }
+  def person(urn: Cite2Urn): Option[Person] = {
+    val matches = persons.filter(_.urn == urn)
+    matches.size match {
+      case 0 => None
+      case 1 => Some(matches(0))
+      case 2 => throw new Exception(s"Urn ${urn} matched ${matches.size} persons." )
+    }
+  }
+
 
   lazy val places: Vector[Place] = {
     Vector.empty[Place]
   }
+  def place(urn: Cite2Urn): Option[Place] = {
+    val matches = places.filter(_.urn == urn)
+    matches.size match {
+      case 0 => None
+      case 1 => Some(matches(0))
+      case 2 => throw new Exception(s"Urn ${urn} matched ${matches.size} persons." )
+    }
+  }
 
-  lazy val EthnicGroup: Vector[EthnicGroup] = {
+  lazy val ethnicGroups: Vector[EthnicGroup] = {
     Vector.empty[EthnicGroup]
   }
+  def ethnicGroup(urn: Cite2Urn): Option[EthnicGroup] = { None }
 
   lazy val speeches: Vector[Speech]  = {
     Vector.empty[Speech]
   }
+  def speech(urn: Cite2Urn): Option[Speech] = { None }
 
   lazy val vaShipsCatalog: Vector[VenACatalogEntry]  = {
     Vector.empty[VenACatalogEntry]
   }
+  def venACatalogEntry(urn: Cite2Urn):  Option[VenACatalogEntry] = { None }
 
-  lazy val vaSimileMarker: Vector[VenASimileMarker]  = {
+  lazy val vaSimileMarkers: Vector[VenASimileMarker]  = {
     Vector.empty[VenASimileMarker]
   }
+  def vaSimileMarker(urn: Cite2Urn):  Option[VenASimileMarker] = { None }
 
   lazy val textReuse: Vector[TextReuse]  = {
     Vector.empty[TextReuse]
@@ -86,7 +116,7 @@ case class HmtLibrary(library: CiteLibrary) {
 
 
   ///////////  Functions to find specific sets of content
-  
+
   /** Get all objects in a collection modelled by DSE.
   *
   * @param context Limiting URN, perhaps a whole manuscript.
