@@ -63,9 +63,11 @@ case class HmtLibrary(library: CiteLibrary) {
     Vector.empty[Scholion]
   }
 
+
+/*
   lazy val tokens: Vector[GroupedToken] = {
     Vector.empty[GroupedToken]
-  }
+  } */
 
   lazy val persons: Vector[Person] = {
     Vector.empty[Person]
